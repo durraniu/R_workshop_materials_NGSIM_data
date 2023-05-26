@@ -7,18 +7,23 @@ library(arrow)
 df <- arrow::read_parquet(here::here("data", "tidy", "df.parquet"))
 
 
+# Gipps Model Calculations for One Pair ------------------------------------------------
+## Equation: https://umairdurrani.com/posts/2022-08-15-gipps-model-in-r-and-julia/gipps.html
+
 
 df_47 <- df |>
   filter(vehicle_id == "47")
 
 
-ggplot(df_47) +
-  geom_line(aes(time, v_vel))
 
+# Let's implement Gipps Model as a function -------------------------------
 
-names(df_47)
+## This will allow us to provide model parameters and function inputs
 
+## See the implementation in the functions folder
+source(here::here("code", "final", "functions", "simulate_gipps.R"))
 
+## Now, run it:
 res <- simulate_gipps(
   resolution = 0.1, 
   dfn1 = df_47,
@@ -29,7 +34,7 @@ res <- simulate_gipps(
   ln = df_47$v_length[1], 
   an = 2,
   Vn = 22, 
-  tau = 1.2, 
+  tau = 2, 
   bn_const = -1.5, 
   bcap = -2.0
 )

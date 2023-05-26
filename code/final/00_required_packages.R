@@ -1,4 +1,3 @@
-install.packages("RSocrata")
 install.packages("tidyverse")
 install.packages("arrow")
 install.packages("data.table")

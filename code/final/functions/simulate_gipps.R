@@ -60,7 +60,7 @@ simulate_gipps <- function(resolution, dfn1,
   
   ###### Gipps Calculations ############################
   
-  for (t in 2:(time_length - 1)) {
+  for (t in 2:(time_length)) {
     
     ## free flow
     vn_ff[t] <- vn[t - 1] +
@@ -96,6 +96,8 @@ simulate_gipps <- function(resolution, dfn1,
     # speed difference
     deltav[t] <- vn[t] - vn1[t]
   }
+  
+  
   # ################## Result in a dataframe ###################################
   result_dfn <- data.frame(Time, xn1, vn1, ln1, bcap, bn, xn, vn_ff, vn_cf, vn, sn, deltav)
     
