@@ -1,0 +1,6 @@
+/cloud/project/data/tidy/df.parquet
+/cloud/project/data/raw/df_raw.parquet
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
