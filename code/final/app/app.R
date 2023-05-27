@@ -2,6 +2,7 @@ library(shiny)
 library(plotly)
 library(tidyverse)
 library(arrow)
+library(DT)
 
 
 # Global ------------------------------------------------------------------
@@ -23,7 +24,7 @@ ui <- fluidPage(
     sidebarPanel(
       
       
-      selectInput("driver", label = h3("Select Pair"), 
+      selectInput("driver", label = h4("Select Vehicle Pair"), 
                   choices = unique(df$pair_id), 
                   selected = "47-39"),
       
@@ -42,7 +43,8 @@ ui <- fluidPage(
     
     mainPanel(
      
-      plotOutput("cplot")
+      plotlyOutput("cplot"),
+      DTOutput('data_table')
     )
 )
 )
@@ -71,7 +73,7 @@ server <- function(input, output, session) {
   })
   
   res <- reactive({
-    simulate_gipps(
+    result <- simulate_gipps(
       resolution = 0.1, 
       dfn1 = driver1(),
       xn1 = driver1()$preceding_local_y, 
@@ -85,19 +87,31 @@ server <- function(input, output, session) {
       bn_const = input$bn_const, 
       bcap = input$b_cap
     )
+    
+    result |> 
+      mutate(across(.cols = bn:deltav, .fns = ~ round(.x, 2)))
   })
   
-  output$cplot <- renderPlot({
+  output$cplot <- renderPlotly({
     
     plot_speed <- ggplot() +
       geom_line(data = driver1(), aes(time, v_vel, color = "Subject Speed (Obs)")) +
       geom_line(data = res(), aes(Time, vn1, color = "Preceding Speed (Obs)")) +
       geom_line(data = res(), aes(Time, vn, color = "Subject Speed (Gipps)")) +
+      scale_color_manual(values = c("grey70", "darkblue", "skyblue")) +
+      labs(title = "Observed and Predicted Speed Trajectories",
+           x = "Time (s)",
+           y = "Speed (m/s)",
+           color = "") +
       theme_classic()
     
-    plot_speed
+    ggplotly(plot_speed)
     
   })
+  
+  
+  
+  output$data_table <- renderDT(res())
   
   
 }

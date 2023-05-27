@@ -10,7 +10,7 @@ install.packages("plotly")
 install.packages("flextable")
 install.packages("rvg")
 install.packages("officer")
-
+install.packages("DT")
 
 
 # Important links ---------------------------------------------------------
