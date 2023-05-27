@@ -45,3 +45,7 @@ DAY 2:
 -   Sending editable plots to Powerpoint for animation
 
 **Building an interactive application**
+
+
+
+You may run this project by cloning this repo or accessing the [rstudio cloud project](https://posit.cloud/content/6026632)
